@@ -24,13 +24,14 @@ function setup()
   
   //paint
   paint = new Button();
-
+  //colour
   colourBox = new Colour(400,20);
 
 
   //circle buttons
   circleButton1 = new Button();
   circleButton2 = new Button();
+  circleButton3 = new Button();
 
   //slider størrele
   sizeSlider = createSlider(1, 60, 25, 1);
@@ -40,21 +41,11 @@ function setup()
   gif_createImg1 = createImg("fetchimage.gif");
   gif_createImg2 = createImg("rock.gif");
 
+  gif_createImg1.position(0, 2500);
+  gif_createImg2.position(0, 2500);
+
   song = loadSound('boom.mp3');
 
-  setInterval(timeIt, 1000);
-
-}
-
-function timeIt()
-{
-    //Boom effect
-    if(keyIsDown(LEFT_ARROW))
-    {
-      song.play();
-      console.log("SUS");
-
-    }
 }
 
 function draw() 
@@ -63,15 +54,24 @@ function draw()
   var previewSizeX = 292.5;
   var previewSizeY = 60;
 
-
   //menu
   strokeWeight(2);
   fill(menuCol);
   rect(canvasX/2, canvasY/12, canvasX, canvasY/6); //300, 50, 600, 100
 
   //circle buttons
-  circleInfo1 = circleButton1.Create_Circle_Button(50, 50, 50, 255, 255, 255);
-  circleInfo2 = circleButton2.Create_Circle_Button(150, 50, 50);
+  circleInfo1 = circleButton1.Create_Circle_Button(25, 50, 50, 255, 255, 255);
+  circleInfo2 = circleButton2.Create_Circle_Button(90, 50, 50, 255, 255, 255);
+  circleInfo3 = circleButton3.Create_Circle_Button(155, 50, 50, 255, 255);
+
+  //fill col box x og y koord
+  colourBox.FillCol(circleInfo1[0], circleInfo1[1], circleInfo1[2], mouse_Press);
+
+  //Erase 
+  colourBox.Erase(circleInfo3[0], circleInfo3[1], circleInfo3[2], mouse_Press, circleInfo3[3]);
+
+  //amogus 
+  colourBox.AmogusKnap(gif_createImg1, gif_createImg2, circleInfo2[0], circleInfo2[1], circleInfo2[2], mouse_Press, song);
 
   //colors
   paint_RGB = colourBox.Box_Button(mouse_Press); 
@@ -83,7 +83,7 @@ function draw()
   { 
     mouse_Press = true;
     
-    //console.log(circleInfo[0]);
+    //paint under menu
     if(mouseY > 100)
     {
       paint.Paint(sizeSlider.value(), paint_RGB[0], paint_RGB[1], paint_RGB[2]); //funktion til at tegne (størrelse, r-værdi, g-værdi, b-værdi)
@@ -94,35 +94,10 @@ function draw()
     mouse_Press = false;
   }
 
-  Mouse_Pos();
-
-
-  //AMOGUS
-  if(keyIsDown(LEFT_ARROW))
-  {
-    gif_createImg1.position(0, 250);
-    gif_createImg2.position(200, 150);
-  }
-  else
-  {
-    gif_createImg1.position(0, 2500);
-    gif_createImg2.position(0,2500);
-  }
+  Mouse_Pos();  //console log mouse pos
   
-  
-  //Boom effect
-  if(keyIsDown(LEFT_ARROW) && flag == false)
-  {
-    song.play();
-    console.log("SUS");
-    flag = true;
-  }
-
-  if(keyIsDown(LEFT_ARROW) != true && flag == true)
-  {
-    flag = false;
-  }
-
+  fill(255,255,255,0);
+  rect(canvasX/2, canvasY/2, canvasX-1, canvasY-1); //vi laver en outline med rect, for at programmet er seperat fra resten af vinduet igen
 }
 
 

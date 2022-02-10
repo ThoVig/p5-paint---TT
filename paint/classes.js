@@ -2,7 +2,7 @@ class Button
 {
     constructor()
     {
-
+        this.bright = 1;
 
     }
 
@@ -31,11 +31,12 @@ class Button
         this.r = r;
         this.g = g;
         this.b = b;
+
         
-        fill(r, g, b);
+        fill(this.r * this.bright, this.g * this.bright, this.b * this.bright);
         circle(this.xLocation, this.yLocation, this.diameter);
 
-        this.circleInfo = [this.xCircleButton, this.yCircleButton,this.diameterCircleButton];
+        this.circleInfo = [this.xCircleButton, this.yCircleButton,this.diameterCircleButton, this.bright];
         return this.circleInfo;
     }
 
@@ -53,6 +54,8 @@ class Colour
         this.g;
         this.b;
 
+        this.flag = false;
+
         //button hover color 
 
         this.red_bright;
@@ -61,9 +64,6 @@ class Colour
         this.gre_bright;
         this.blu_bright;
         this.black_bright
-
-        //erase hover color
-        this.era_bright;
     }
 
     Box_Button(mouse_Press)
@@ -99,15 +99,6 @@ class Colour
         fill(this.r, this.g, this.b); //actual paint color
         rect(this.x + 165, this.y + 17, 50, 65);
 
-
-        //erase
-        fill(255*this.era_bright);
-        rect(this.x, this.y + 35 + this.ySize, this.xSize, 20)
-        fill(0);
-        textAlign(CENTER)
-        text("Erase", this.x, this.y + 37 + this.ySize)
-
-
         /////////////////////////////////////////////////////
         
         //press
@@ -120,7 +111,7 @@ class Colour
                 {
                     this.r = 255;
                     this.g = 0;
-                    this.b = 0;
+                    this.b = 0
                 }
                 console.log("red");
 
@@ -265,34 +256,7 @@ class Colour
         {
             this.black_bright = 0;
         }
-        ////
-
-        //erase
-        if(mouseX > this.x - this.xSize/2 && mouseX < this.x + this.xSize/2)    //x
-        {
-            if(mouseY > this.y + 35 + this.ySize - 20/2 && mouseY < this.y + 35 + 20 + 20)  //y
-            {
-                if(this.Press)
-                {
-                    this.r = 255;
-                    this.g = 255;
-                    this.b = 255;
-                }
-                console.log("erase");
-
-                this.era_bright = 0.85;
-            }
-            else
-            {
-                this.era_bright = 1;
-            }
-        }
-        else
-        {
-            this.era_bright = 1;
-        }
-        ////
-
+//////////////////
         
         //return den rigtige rgb value
         this.RGB = [this.r, this.g, this.b];
@@ -301,6 +265,116 @@ class Colour
         noFill();
     }
 
+    FillCol(buttonXPos, buttonYPos, buttonDia, mousePress)
+    {
+        //knap lokation
+        this.xFill = buttonXPos;
+        this.yFill = buttonYPos;
+        this.dia = buttonDia;
+        strokeWeight(1);
+        fill(0);
+        text('fill', this.xFill, this.yFill);
+
+        //bool for hvis knappen er trykket
+        this.mousePress = mousePress;
+
+        //tegn rect ovenpå canvas, for at kunne ændre baggrund når vi vil
+        this.rFill = 255;
+        this.gFill = 255;
+        this.bFill = 255;
+
+        //Baggrund er usynlig når den ikke bliver brugt
+        this.alpha = 0;
 
 
+        if(mouseX < this.xFill + this.dia/2 && mouseX > this.xFill - this.dia/2) 
+        {
+            if(mouseY < this.yFill + this.dia/2 && mouseY > this.yFill - this.dia/2)
+            {
+                if(this.mousePress)
+                {
+                    this.rFill = this.r
+                    this.gFill = this.g
+                    this.bFill = this.b
+                    this.alpha = 255
+                }
+            }
+
+        }
+        fill(this.rFill, this.gFill, this.bFill, this.alpha)
+        rect(300,300,5000,5000);
+            
+    }
+
+    AmogusKnap( gif_createImg1,  gif_createImg2, abuttonXPos, abuttonYPos, abuttonDia, amousePress, song)
+    {
+        this.gif1 = gif_createImg1;
+        this.gif2 = gif_createImg2;
+
+        this.xAmong = abuttonXPos;
+        this.yAmong = abuttonYPos;
+        this.diaAmong = abuttonDia;
+
+        this.song = song;
+
+        this.amousepress = amousePress;
+
+        fill(0);
+        text("( ͠° ͟ʖ ͡°)", this.xAmong, this.yAmong);
+
+        //AMOGUS
+        if(mouseX < this.xAmong + this.diaAmong/2 && mouseX > this.xAmong - this.diaAmong/2)
+        {
+            if(mouseY < this.yAmong + this.diaAmong/2 && mouseY > this.yAmong - this.diaAmong/2)
+            {
+                if(this.mousePress)   
+                {
+                this.gif1.position(0, 250);
+                this.gif2.position(300, 100);
+
+                    if(this.flag == false)
+                    {
+                        this.song.play();
+                        console.log("SUS");
+                        this.flag = true;
+                    }
+                }
+                else
+                {
+                    this.gif1.position(0, 2500);
+                    this.gif2.position(0,2500); 
+                    this.flag = false;
+                } 
+            }    
+        }
+    }
+
+    Erase(EbuttonXPos, EbuttonYPos, EbuttonDia, eMousePress, eBright)
+    {
+        //knap lokation
+        this.xErase = EbuttonXPos;
+        this.yErase = EbuttonYPos;
+        this.diaErase = EbuttonDia;
+        
+        this.era_bright = eBright;
+
+        //erase
+        fill(0);
+        textAlign(CENTER);
+        text("Erase", this.xErase, this.yErase);
+
+        if(mouseX < this.xErase + this.diaErase/2 && mouseX > this.xErase - this.diaErase/2)    //x
+        {
+            if(mouseY < this.yErase + this.diaErase/2 && mouseY > this.yErase - this.diaErase/2)  //y
+            {
+                if(this.Press)
+                {
+                    this.r = 255;
+                    this.g = 255;
+                    this.b = 255;
+                }
+                console.log("erase");
+            }
+        }
+    }
 }
