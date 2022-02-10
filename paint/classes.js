@@ -2,6 +2,7 @@ class Button
 {
     constructor()
     {
+        //så vi kan ændrer farverne i knappen, når brugeren tager musen over
         this.bright = 1;
 
     }
@@ -12,6 +13,7 @@ class Button
         this.r = paint_R
         this.g = paint_G
         this.b = paint_B;
+
         strokeWeight(0)
         fill(this.r,this.g,this.b);
         circle(mouseX, mouseY, this.radius) 
@@ -54,7 +56,9 @@ class Colour
         this.g;
         this.b;
 
+        //jeppe logik
         this.flag = false;
+        this.flagFill = false;
 
         //button hover color 
 
@@ -256,7 +260,7 @@ class Colour
         {
             this.black_bright = 0;
         }
-//////////////////
+        //////////////////
         
         //return den rigtige rgb value
         this.RGB = [this.r, this.g, this.b];
@@ -273,7 +277,7 @@ class Colour
         this.dia = buttonDia;
         strokeWeight(1);
         fill(0);
-        text('fill', this.xFill, this.yFill);
+        text('Fill', this.xFill, this.yFill);
 
         //bool for hvis knappen er trykket
         this.mousePress = mousePress;
@@ -286,24 +290,29 @@ class Colour
         //Baggrund er usynlig når den ikke bliver brugt
         this.alpha = 0;
 
-
         if(mouseX < this.xFill + this.dia/2 && mouseX > this.xFill - this.dia/2) 
         {
             if(mouseY < this.yFill + this.dia/2 && mouseY > this.yFill - this.dia/2)
             {
                 if(this.mousePress)
                 {
-                    this.rFill = this.r
-                    this.gFill = this.g
-                    this.bFill = this.b
-                    this.alpha = 255
+                    if(this.flagFill == false)
+                    {
+                        this.rFill = this.r
+                        this.gFill = this.g
+                        this.bFill = this.b
+                        this.alpha = 255
+                        this.flagFill = true;
+                    }
+                }
+                else
+                {
+                    this.flagFill = false;
                 }
             }
-
         }
         fill(this.rFill, this.gFill, this.bFill, this.alpha)
-        rect(300,300,5000,5000);
-            
+        rect(300,300,5000,5000);     
     }
 
     AmogusKnap( gif_createImg1,  gif_createImg2, abuttonXPos, abuttonYPos, abuttonDia, amousePress, song)
